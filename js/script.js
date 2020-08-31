@@ -20,3 +20,25 @@
 //       "name": "Capodanno",
 //       "date": "2018-01-01"
 //     }
+
+$(document).ready(function () {
+  var dataInizio = moment("2018-01-01"); // Creo l'oggetto moment sulla data di partenza
+  var month = dataInizio.format("MMMM");
+  $("h1.month").html(month + " " + dataInizio.format("YYYY"));
+
+  var daysMonth = dataInizio.daysInMonth(); // Calcolo i giorni in ogni mese
+
+  for (var i = 1; i <= daysMonth; i++) {
+    var source = $("#day-template").html();
+    var template = Handlebars.compile(source);
+
+    var context = {
+      day: i,
+      month: month,
+    };
+
+    var html = template(context);
+
+    $(".month-list").append(html);
+  }
+});

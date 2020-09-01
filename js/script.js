@@ -22,12 +22,75 @@
 //     }
 
 $(document).ready(function () {
-  var dataInizio = moment("2018-01-01"); // Creo l'oggetto moment sulla data di partenza
-  var month = dataInizio.format("MMMM");
-  var year = dataInizio.format("YYYY");
+  var dataInizio = moment($("h1.month").attr("data-my-date")); // Memorizzo l'attributo data-my-date del tag h1 e
+  // lo considero come data di partenza per generare le date
+
+  // var dataInizio = moment("2018-01-01"); // Creo l'oggetto moment sulla data di partenza
+
+  insertDate(dataInizio);
+  // var month = dataInizio.format("MMMM");
+  // var year = dataInizio.format("YYYY");
+  // $("h1.month").html(month + " " + year);
+
+  // var daysMonth = dataInizio.daysInMonth(); // Calcolo i giorni in ogni mese
+
+  // for (var i = 1; i <= daysMonth; i++) {
+  //   var source = $("#day-template").html();
+  //   var template = Handlebars.compile(source);
+
+  //   var context = {
+  //     day: addZero(i),
+  //     month: month,
+  //     fullDate: year + "-" + dataInizio.format("MM") + "-" + addZero(i),
+  //   };
+
+  //   var html = template(context);
+
+  //   $(".month-list").append(html);
+  // }
+  insertHoliday(dataInizio);
+  // $.ajax({
+  //   url: "https://flynn.boolean.careers/exercises/api/holidays",
+  //   method: "GET",
+  //   data: {
+  //     year: dataInizio.year(),
+  //     month: dataInizio.month(),
+  //   },
+  //   success: function (data) {
+  //     for (var i = 0; i < data.response.length; i++) {
+  //       var listItem = $('li[data-full-date="' + data.response[i].date + '"]');
+  //       listItem.append("- " + data.response[i].name);
+  //       listItem.addClass("festa");
+  //     }
+  //   },
+  // });
+
+  $("button#next").click(function () {
+    next(dataInizio);
+  });
+
+  $("button#prev").click(function () {
+    prev(dataInizio);
+  });
+});
+
+// ** FUNZIONI **
+
+function addZero(n) {
+  if (n < 10) {
+    return "0" + n;
+  }
+  return n;
+}
+
+function insertDate(data) {
+  $("ul.month-list").empty();
+
+  var month = data.format("MMMM");
+  var year = data.format("YYYY");
   $("h1.month").html(month + " " + year);
 
-  var daysMonth = dataInizio.daysInMonth(); // Calcolo i giorni in ogni mese
+  var daysMonth = data.daysInMonth(); // Calcolo i giorni in ogni mese
 
   for (var i = 1; i <= daysMonth; i++) {
     var source = $("#day-template").html();
@@ -36,33 +99,51 @@ $(document).ready(function () {
     var context = {
       day: addZero(i),
       month: month,
-      fullDate: year + "-" + dataInizio.format("MM") + "-" + addZero(i),
+      fullDate: year + "-" + data.format("MM") + "-" + addZero(i),
     };
 
     var html = template(context);
 
     $(".month-list").append(html);
   }
+}
 
+function insertHoliday(data) {
   $.ajax({
     url: "https://flynn.boolean.careers/exercises/api/holidays",
     method: "GET",
     data: {
-      year: dataInizio.year(),
-      month: dataInizio.month(),
+      year: data.year(),
+      month: data.month(),
     },
-    success: function (data) {
-      for (var i = 0; i < data.response.length; i++) {
-        var listItem = $('li[data-full-date="' + data.response[i].date + '"]');
-        listItem.append("- " + data.response[i].name);
+    success: function (risposta) {
+      for (var i = 0; i < risposta.response.length; i++) {
+        var listItem = $(
+          'li[data-full-date="' + risposta.response[i].date + '"]'
+        );
+        listItem.append("- " + risposta.response[i].name);
+        listItem.addClass("festa");
       }
     },
   });
-});
+}
 
-function addZero(n) {
-  if (n < 10) {
-    return "0" + n;
+function next(data) {
+  if (data.month() == 11) {
+    alert("Non puoi proseguire");
+  } else {
+    data.add(1, "months");
+    insertDate(data);
+    insertHoliday(data);
   }
-  return n;
+}
+
+function prev(data) {
+  if (data.month() == 0) {
+    alert("Non puoi proseguire");
+  } else {
+    data.subtract(1, "months");
+    insertDate(data);
+    insertHoliday(data);
+  }
 }

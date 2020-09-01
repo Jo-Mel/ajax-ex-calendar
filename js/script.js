@@ -24,7 +24,8 @@
 $(document).ready(function () {
   var dataInizio = moment("2018-01-01"); // Creo l'oggetto moment sulla data di partenza
   var month = dataInizio.format("MMMM");
-  $("h1.month").html(month + " " + dataInizio.format("YYYY"));
+  var year = dataInizio.format("YYYY");
+  $("h1.month").html(month + " " + year);
 
   var daysMonth = dataInizio.daysInMonth(); // Calcolo i giorni in ogni mese
 
@@ -33,12 +34,35 @@ $(document).ready(function () {
     var template = Handlebars.compile(source);
 
     var context = {
-      day: i,
+      day: addZero(i),
       month: month,
+      fullDate: year + "-" + dataInizio.format("MM") + "-" + addZero(i),
     };
 
     var html = template(context);
 
     $(".month-list").append(html);
   }
+
+  $.ajax({
+    url: "https://flynn.boolean.careers/exercises/api/holidays",
+    method: "GET",
+    data: {
+      year: dataInizio.year(),
+      month: dataInizio.month(),
+    },
+    success: function (data) {
+      for (var i = 0; i < data.response.length; i++) {
+        var listItem = $('li[data-full-date="' + data.response[i].date + '"]');
+        listItem.append("- " + data.response[i].name);
+      }
+    },
+  });
 });
+
+function addZero(n) {
+  if (n < 10) {
+    return "0" + n;
+  }
+  return n;
+}

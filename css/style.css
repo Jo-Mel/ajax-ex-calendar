@@ -1,3 +1,50 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    /* background-color: lightblue; */
+    background-image: url('../img/planner.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
 .festa {
-    color: red;
+    color: crimson;
+    font-size: 20px;
+}
+
+.ctn {
+    text-align: center;
+    margin-top: 30px;
+    margin-left: 500px;
+}
+
+h1,
+button {
+    display: inline-block;
+    cursor: pointer;
+}
+
+h1 {
+    margin: 0 10px;
+    color: darkgrey;
+}
+
+button {
+    padding: 8px 20px;
+    background-color: darkcyan;
+    color: white;
+    border: 1px solid white;
+    border-radius: 4px;
+}
+
+ul {
+    margin-top: 20px;
+    font-size: 18px;
+    list-style: none;
+    color: dimgray;
 }

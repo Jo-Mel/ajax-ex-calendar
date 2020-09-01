@@ -13,14 +13,21 @@ body {
 }
 
 .festa {
-    color: crimson;
-    font-size: 20px;
+    color: #B31200;
+    font-size: 22px;
 }
 
 .ctn {
+    width: 30%;
     text-align: center;
     margin-top: 30px;
-    margin-left: 500px;
+    margin-bottom: 30px;
+    margin-left: 900px;
+    border: 1px solid darkgrey;
+    border-radius: 8px;
+    box-shadow: 1px 1px 2px 1px darkgrey;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 h1,
@@ -36,7 +43,7 @@ h1 {
 
 button {
     padding: 8px 20px;
-    background-color: darkcyan;
+    background-color: #00A1B3;
     color: white;
     border: 1px solid white;
     border-radius: 4px;
